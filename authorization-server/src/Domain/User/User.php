@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\User;
 
-class User implements \JsonSerializable
+use League\OAuth2\Server\Entities\UserEntityInterface;
+
+class User implements \JsonSerializable, UserEntityInterface
 {
 
     public function __construct(
-        private ?int $id,
+        private ?string $id,
         private ?string $username,
         private ?string $password,
         private ?string $email,
@@ -19,7 +21,7 @@ class User implements \JsonSerializable
         private ?string $updatedAt,
     ) {}
 
-    public function getId(): ?int
+    public function getIdentifier(): string
     {
         return $this->id;
     }
