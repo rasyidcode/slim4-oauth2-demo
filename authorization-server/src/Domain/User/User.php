@@ -4,26 +4,42 @@ declare(strict_types=1);
 
 namespace App\Domain\User;
 
+use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 
 class User implements \JsonSerializable, UserEntityInterface
 {
 
-    public function __construct(
-        private ?string $id,
-        private ?string $username,
-        private ?string $password,
-        private ?string $email,
-        private ?string $fullName,
-        private ?array $roles,
-        private ?bool $isActive,
-        private ?string $createdAt,
-        private ?string $updatedAt,
-    ) {}
+    use EntityTrait;
 
-    public function getIdentifier(): string
-    {
-        return $this->id;
+    private string $username;
+    private string $password;
+    private string $email;
+    private string $fullName;
+    private array $roles;
+    private bool $isActive;
+    private string $createdAt;
+    private string $updatedAt;
+
+    public function __construct(
+        string $identifier,
+        string $username,
+        string $password,
+        string $email,
+        array $roles = [],
+        bool $isActive = true,
+        string $createdAt = '',
+        string $updatedAt = '',
+    ) {
+        $this->identifier = $identifier;
+        $this->username = $username;
+        $this->password = $password;
+        $this->email = $email;
+        $roles[] = 'ROLE_USER';
+        $this->roles = array_unique($roles);
+        $this->isActive = $isActive;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     public function setUsername(?string $username): void
@@ -83,10 +99,7 @@ class User implements \JsonSerializable, UserEntityInterface
 
     public function getRoles(): ?array
     {
-        $roles = $this->roles;
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return $this->roles;
     }
 
     public function getCreatedAt(): ?string
@@ -103,9 +116,10 @@ class User implements \JsonSerializable, UserEntityInterface
     public function jsonSerialize(): mixed
     {
         return [
-            'id' => $this->id,
+            'id' => $this->identifier,
             'username' => $this->username,
             'email' => $this->email,
+            'full_name' => $this->fullName,
             'roles' => $this->roles,
             'is_active' => $this->isActive,
             'created_at' => $this->createdAt,
