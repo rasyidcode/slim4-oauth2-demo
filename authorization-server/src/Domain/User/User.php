@@ -13,12 +13,19 @@ class User implements \JsonSerializable, UserEntityInterface
     use EntityTrait;
 
     private string $username;
+
     private string $password;
+
     private string $email;
+
     private string $fullName;
+
     private array $roles;
+
     private bool $isActive;
+
     private string $createdAt;
+
     private string $updatedAt;
 
     public function __construct(
