@@ -1,2 +1,20 @@
 services:
-  
+  php-fpm:
+    build: .
+    volumes:
+      - ./authorization-server:/srv/authorization-server
+  server:
+    image: nginx:1.27.4-alpine
+    volumes:
+      - ./authorization-server:/srv/authorization-server
+      - ./authorization-server.conf:/etc/nginx/conf.d/authorization-server.conf
+    ports:
+      - "80:80"
+  db:
+    image: mysql:9.2
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+    volumes:
+      - db-data:/var/lib/mysql
+volumes:
+  db-data:
