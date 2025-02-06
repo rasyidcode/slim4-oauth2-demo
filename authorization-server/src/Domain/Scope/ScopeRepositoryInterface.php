@@ -13,7 +13,7 @@ interface ScopeRepositoryInterface extends OAuthScopeRepositoryInterface
      */
     public function findAll(): array;
 
-    public function find(string $identifier): Scope;
+    public function find(string $identifier): ?Scope;
 
     public function create(Scope $scope): void;
 
