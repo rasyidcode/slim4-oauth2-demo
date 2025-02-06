@@ -10,17 +10,13 @@ use PHPUnit\Framework\TestCase;
 class ScopeTest extends TestCase
 {
 
-    public function hello() {
-        $this->assertEquals(1, 1);
-    }
-
-    public function hello_test()
+    public function testCreatingNewObject()
     {
         $scope = Scope::of('user:read', 'Read user detail');
 
-        $this->assertNull($scope->getIdentifier());
+        $this->assertEmpty($scope->getIdentifier());
         $this->assertSame($scope->getName(), 'user:read');
         $this->assertSame($scope->getDescription(), 'Read user detail');
-        $this->assertNull($scope->getCreatedAt());
+        $this->assertEmpty($scope->getCreatedAt());
     }
 }
