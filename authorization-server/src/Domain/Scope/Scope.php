@@ -11,22 +11,24 @@ use League\OAuth2\Server\Entities\Traits\ScopeTrait;
 class Scope implements ScopeEntityInterface
 {
 
-    use EntityTrait;
-    use ScopeTrait;
+    // use EntityTrait;
+    // use ScopeTrait;
 
-    private string $name;
+    private ?int $id;
 
-    private string $description;
+    private ?string $name;
 
-    private string $createdAt;
+    private ?string $description;
+
+    private ?string $createdAt;
 
     public function __construct(
-        string $identifier,
-        string $name,
-        string $description,
-        string $createdAt
+        ?int $id,
+        ?string $name,
+        ?string $description,
+        ?string $createdAt
     ) {
-        $this->identifier = $identifier;
+        $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->createdAt = $createdAt;
@@ -34,20 +36,40 @@ class Scope implements ScopeEntityInterface
 
     public static function of(string $name, string $description): self
     {
-        return new self('', $name, $description, '');
+        return new self(null, $name, $description, null);
     }
 
-    public function getName(): string
+    public function getIdentifier(): string
+    {
+        return $this->name ?? '';
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function getDescription(): string
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function getCreatedAt(): string
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getCreatedAt(): ?string
     {
         return $this->createdAt;
     }
@@ -55,7 +77,7 @@ class Scope implements ScopeEntityInterface
     public function jsonSerialize(): array
     {
         return [
-            'identifier' => $this->identifier,
+            'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
             'created_at' => $this->createdAt

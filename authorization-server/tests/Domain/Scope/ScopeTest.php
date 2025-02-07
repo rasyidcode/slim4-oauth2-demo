@@ -14,31 +14,43 @@ class ScopeTest extends TestCase
     {
         $scope = Scope::of('user:read', 'Read user detail');
 
-        $this->assertEmpty($scope->getIdentifier());
-        $this->assertSame($scope->getName(), 'user:read');
-        $this->assertSame($scope->getDescription(), 'Read user detail');
-        $this->assertEmpty($scope->getCreatedAt());
+        $this->assertNull($scope->getId());
+        $this->assertNotEmpty($scope->getIdentifier());
+        $this->assertSame('user:read', $scope->getName());
+        $this->assertSame('Read user detail', $scope->getDescription());
+        $this->assertNull($scope->getCreatedAt());
     }
 
     public function testCreateNewObjectFromArray()
     {
         $data = [
-            'identifier' => '1',
+            'id' => 1,
             'name' => 'user:read',
             'description' => 'Read user detail',
             'created_at' => '2025-02-07 12:28:00'
         ];
 
         $scope = new Scope(
-            $data['identifier'],
+            $data['id'],
             $data['name'],
             $data['description'],
             $data['created_at']
         );
 
-        $this->assertSame($data['identifier'], '1');
-        $this->assertSame($data['name'], 'user:read');
-        $this->assertSame($data['description'], 'Read user detail');
-        $this->assertSame($data['created_at'], '2025-02-07 12:28:00');
+        $this->assertSame(1, $scope->getId());
+        $this->assertNotEmpty($scope->getIdentifier());
+        $this->assertSame('user:read', $scope->getName());
+        $this->assertSame('Read user detail', $scope->getDescription());
+        $this->assertSame('2025-02-07 12:28:00', $scope->getCreatedAt());
+    }
+
+    public function testUpdateExistingObject()
+    {
+        $scope = new Scope(1, 'user:read', 'Read user detail', '2025-02-07 12:28:00');
+        $scope->setName('user:write');
+        $scope->setDescription('Allow to update user');
+
+        $this->assertSame('user:write', $scope->getName());
+        $this->assertSame('Allow to update user', $scope->getDescription());
     }
 }
