@@ -22,21 +22,25 @@ class Scope implements ScopeEntityInterface
 
     private ?string $createdAt;
 
+    private ?string $updatedAt;
+
     public function __construct(
         ?int $id,
         ?string $name,
         ?string $description,
-        ?string $createdAt
+        ?string $createdAt,
+        ?string $updatedAt
     ) {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     public static function of(string $name, string $description): self
     {
-        return new self(null, $name, $description, null);
+        return new self(null, $name, $description, null, null);
     }
 
     public function getIdentifier(): string
@@ -74,13 +78,19 @@ class Scope implements ScopeEntityInterface
         return $this->createdAt;
     }
 
+    public function getUpdatedAt(): ?string
+    {
+        return $this->updatedAt;
+    }
+
     public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'created_at' => $this->createdAt
+            'created_at' => $this->createdAt,
+            'updated_at' => $this->updatedAt,
         ];
     }
 }

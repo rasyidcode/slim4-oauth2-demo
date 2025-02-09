@@ -36,8 +36,8 @@ class Client implements \JsonSerializable, ClientEntityInterface
         ?int $id,
         ?string $clientId,
         ?string $clientSecret,
-        ?string $redirectUri,
         ?string $name,
+        ?string $redirectUri,
         ?array $grantTypes,
         ?array $scopes,
         ?bool $isConfidential,
@@ -48,11 +48,11 @@ class Client implements \JsonSerializable, ClientEntityInterface
         $this->id = $id;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
-        $this->redirectUri = $redirectUri;
-        $this->name = $name;
+        $this->name = $name ?? '';
+        $this->redirectUri = $redirectUri ?? '';
         $this->grantTypes = $grantTypes;
         $this->scopes = $scopes;
-        $this->isConfidential = $isConfidential;
+        $this->isConfidential = $isConfidential ?? false;
         $this->isActive = $isActive;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
@@ -61,21 +61,20 @@ class Client implements \JsonSerializable, ClientEntityInterface
     public static function of(
         ?string $clientId,
         ?string $clientSecret,
-        ?string $redirectUri,
         ?string $name,
+        ?string $redirectUri,
         ?array $grantTypes,
         ?array $scopes,
-        ?bool $isConfidential
     ): self {
         return new self(
             null,
             $clientId,
             $clientSecret,
-            $redirectUri ?? '',
             $name,
+            $redirectUri ?? '',
             $grantTypes,
             $scopes,
-            $isConfidential,
+            true,
             true,
             null,
             null

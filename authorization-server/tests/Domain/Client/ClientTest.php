@@ -15,8 +15,8 @@ class ClientTest extends TestCase
         $client = Client::of(
             'testId',
             'testSecret',
-            'http://new-client.test',
             'New Client',
+            'http://new-client.test',
             ['client_credentials'],
             ['user:manage', 'product:read'],
             true
@@ -26,8 +26,8 @@ class ClientTest extends TestCase
         $this->assertNull($client->getId());
         $this->assertSame('testId', $client->getClientId());
         $this->assertSame('testSecret', $client->getClientSecret());
-        $this->assertSame('http://new-client.test', $client->getRedirectUri());
         $this->assertSame('New Client', $client->getName());
+        $this->assertSame('http://new-client.test', $client->getRedirectUri());
         $this->assertSame(['client_credentials'], $client->getGrantTypes());
         $this->assertSame(['user:manage', 'product:read'], $client->getScopes());
         $this->assertSame(true, $client->isConfidential());
@@ -42,8 +42,8 @@ class ClientTest extends TestCase
             1,
             'testId',
             'testSecret',
-            'http://new-client.test',
             'New Client',
+            'http://new-client.test',
             ['client_credentials'],
             ['user:manage', 'product:read'],
             true,
@@ -65,5 +65,35 @@ class ClientTest extends TestCase
         $this->assertSame(['user:read', 'product:read'], $client->getScopes());
         $this->assertFalse($client->isConfidential());
         $this->assertFalse($client->isActive());
+    }
+
+    public function testNullInput()
+    {
+        $client = new Client(
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        );
+
+        $this->assertEmpty($client->getIdentifier());
+        $this->assertNull($client->getId());
+        $this->assertNull($client->getClientId());
+        $this->assertNull($client->getClientSecret());
+        $this->assertEmpty($client->getName());
+        $this->assertEmpty($client->getRedirectUri());
+        $this->assertNull($client->getGrantTypes());
+        $this->assertNull($client->getScopes());
+        $this->assertFalse($client->isConfidential());
+        $this->assertNull($client->isActive());
+        $this->assertNull($client->getCreatedAt());
+        $this->assertNull($client->getUpdatedAt());
     }
 }
