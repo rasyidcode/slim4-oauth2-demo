@@ -6,58 +6,171 @@ namespace App\Domain\Client;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\Traits\ClientTrait;
-use League\OAuth2\Server\Entities\Traits\EntityTrait;
+// use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
 class Client implements \JsonSerializable, ClientEntityInterface
 {
 
-    use EntityTrait;
+    // use EntityTrait;
     use ClientTrait;
 
-    private string $clientId;
+    private ?int $id;
 
-    private string $clientSecret;
+    private ?string $clientId;
 
-    private string $description;
+    private ?string $clientSecret;
 
-    private string $grantTypes;
+    private ?string $description;
 
-    private string $scopes;
+    private ?array $grantTypes;
 
-    private bool $isActive;
+    private ?array $scopes;
 
-    private string $createdAt;
+    private ?bool $isActive;
 
-    private string $updatedAt;
+    private ?string $createdAt;
+
+    private ?string $updatedAt;
 
     public function __construct(
-        string $identifier,
-        string $clientId,
-        string $clientSecret,
-        string|array $redirectUri,
-        string $name,
-        array $grantTypes,
-        array $scopes,
-        bool $isActive = true,
-        string $createdAt = '',
-        string $updatedAt = ''
+        ?int $id,
+        ?string $clientId,
+        ?string $clientSecret,
+        ?string $redirectUri,
+        ?string $name,
+        ?array $grantTypes,
+        ?array $scopes,
+        ?bool $isConfidential,
+        ?bool $isActive,
+        ?string $createdAt,
+        ?string $updatedAt
     ) {
-        $this->identifier = $identifier;
+        $this->id = $id;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->redirectUri = $redirectUri;
         $this->name = $name;
         $this->grantTypes = $grantTypes;
         $this->scopes = $scopes;
+        $this->isConfidential = $isConfidential;
         $this->isActive = $isActive;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
     }
 
+    public static function of(
+        ?string $clientId,
+        ?string $clientSecret,
+        ?string $redirectUri,
+        ?string $name,
+        ?array $grantTypes,
+        ?array $scopes,
+        ?bool $isConfidential
+    ): self {
+        return new self(
+            null,
+            $clientId,
+            $clientSecret,
+            $redirectUri ?? '',
+            $name,
+            $grantTypes,
+            $scopes,
+            $isConfidential,
+            true,
+            null,
+            null
+        );
+    }
+
+    public function getIdentifier(): string
+    {
+        return $this->clientId ?? '';
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getClientId(): ?string
+    {
+        return $this->clientId;
+    }
+
+    public function getClientSecret(): ?string
+    {
+        return $this->clientSecret;
+    }
+
+    public function getName(): string
+    {
+        return $this->name ?? '';
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getRedirectUri(): string|array
+    {
+        return $this->redirectUri ?? '';
+    }
+
+    public function setRedirectUri(string $redirectUri): void
+    {
+        $this->redirectUri = $redirectUri;
+    }
+
+    public function getGrantTypes(): ?array
+    {
+        return $this->grantTypes;
+    }
+
+    public function setGrantTypes(?array $grantTypes): void
+    {
+        $this->grantTypes = $grantTypes;
+    }
+
+    public function getScopes(): ?array
+    {
+        return $this->scopes;
+    }
+
+    public function setScopes(?array $scopes): void
+    {
+        $this->scopes = $scopes;
+    }
+
+    public function setIsConfidential(bool $isConfidential): void
+    {
+        $this->isConfidential = $isConfidential;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(?bool $isActive): void
+    {
+        $this->isActive = $isActive;
+    }
+
+    public function getCreatedAt(): ?string
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): ?string
+    {
+        return $this->updatedAt;
+    }
+
     public function jsonSerialize(): mixed
     {
         return [
-            'id' => $this->identifier,
+            'id' => $this->id,
             'client_id' => $this->clientId,
             'redirect_uri' => $this->redirectUri,
             'name' => $this->name,
