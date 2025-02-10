@@ -22,8 +22,7 @@ class ClientTest extends TestCase
             true
         );
 
-        $this->assertSame('testId', $client->getIdentifier());
-        $this->assertNull($client->getId());
+        $this->assertSame('', $client->getIdentifier());
         $this->assertSame('testId', $client->getClientId());
         $this->assertSame('testSecret', $client->getClientSecret());
         $this->assertSame('New Client', $client->getName());
@@ -32,14 +31,14 @@ class ClientTest extends TestCase
         $this->assertSame(['user:manage', 'product:read'], $client->getScopes());
         $this->assertSame(true, $client->isConfidential());
         $this->assertSame(true, $client->isActive());
-        $this->assertSame(null, $client->getCreatedAt());
-        $this->assertSame(null, $client->getUpdatedAt());
+        $this->assertSame('', $client->getCreatedAt());
+        $this->assertSame('', $client->getUpdatedAt());
     }
 
     public function testUpdateObject()
     {
         $client = new Client(
-            1,
+            '1',
             'testId',
             'testSecret',
             'New Client',
@@ -65,35 +64,11 @@ class ClientTest extends TestCase
         $this->assertSame(['user:read', 'product:read'], $client->getScopes());
         $this->assertFalse($client->isConfidential());
         $this->assertFalse($client->isActive());
-    }
 
-    public function testNullInput()
-    {
-        $client = new Client(
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
-        );
+        $client->setGrantTypes('client_credentials authorization_code');
+        $client->setScopes('user:read product:read');
 
-        $this->assertEmpty($client->getIdentifier());
-        $this->assertNull($client->getId());
-        $this->assertNull($client->getClientId());
-        $this->assertNull($client->getClientSecret());
-        $this->assertEmpty($client->getName());
-        $this->assertEmpty($client->getRedirectUri());
-        $this->assertNull($client->getGrantTypes());
-        $this->assertNull($client->getScopes());
-        $this->assertFalse($client->isConfidential());
-        $this->assertNull($client->isActive());
-        $this->assertNull($client->getCreatedAt());
-        $this->assertNull($client->getUpdatedAt());
+        $this->assertSame('client_credentials authorization_code', $client->getGrantTypes());
+        $this->assertSame('user:read product:read', $client->getScopes());
     }
 }

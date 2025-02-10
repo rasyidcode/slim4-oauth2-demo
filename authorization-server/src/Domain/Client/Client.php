@@ -6,104 +6,87 @@ namespace App\Domain\Client;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\Traits\ClientTrait;
-// use League\OAuth2\Server\Entities\Traits\EntityTrait;
+use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
 class Client implements \JsonSerializable, ClientEntityInterface
 {
 
-    // use EntityTrait;
+    use EntityTrait;
     use ClientTrait;
 
-    private ?int $id;
+    private string $clientId;
 
-    private ?string $clientId;
+    private string $clientSecret;
 
-    private ?string $clientSecret;
+    private string $description;
 
-    private ?string $description;
+    private string|array $grantTypes;
 
-    private ?array $grantTypes;
+    private string|array $scopes;
 
-    private ?array $scopes;
+    private bool $isActive;
 
-    private ?bool $isActive;
+    private string $createdAt;
 
-    private ?string $createdAt;
-
-    private ?string $updatedAt;
+    private string $updatedAt;
 
     public function __construct(
-        ?int $id,
-        ?string $clientId,
-        ?string $clientSecret,
-        ?string $name,
-        ?string $redirectUri,
-        ?array $grantTypes,
-        ?array $scopes,
-        ?bool $isConfidential,
-        ?bool $isActive,
-        ?string $createdAt,
-        ?string $updatedAt
+        string $identifier,
+        string $clientId,
+        string $clientSecret,
+        string $name,
+        string $redirectUri,
+        string|array $grantTypes,
+        string|array $scopes,
+        bool $isConfidential,
+        bool $isActive,
+        string $createdAt,
+        string $updatedAt
     ) {
-        $this->id = $id;
+        $this->identifier = $identifier;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
-        $this->name = $name ?? '';
-        $this->redirectUri = $redirectUri ?? '';
+        $this->name = $name;
+        $this->redirectUri = $redirectUri;
         $this->grantTypes = $grantTypes;
         $this->scopes = $scopes;
-        $this->isConfidential = $isConfidential ?? false;
+        $this->isConfidential = $isConfidential;
         $this->isActive = $isActive;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
     }
 
     public static function of(
-        ?string $clientId,
-        ?string $clientSecret,
-        ?string $name,
-        ?string $redirectUri,
-        ?array $grantTypes,
-        ?array $scopes,
+        string $clientId,
+        string $clientSecret,
+        string $name,
+        string|array $redirectUri,
+        string|array $grantTypes,
+        string|array $scopes,
     ): self {
         return new self(
-            null,
+            '',
             $clientId,
             $clientSecret,
             $name,
-            $redirectUri ?? '',
+            $redirectUri,
             $grantTypes,
             $scopes,
             true,
             true,
-            null,
-            null
+            '',
+            ''
         );
     }
 
-    public function getIdentifier(): string
-    {
-        return $this->clientId ?? '';
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getClientId(): ?string
+    public function getClientId(): string
     {
         return $this->clientId;
     }
 
-    public function getClientSecret(): ?string
+    public function getClientSecret(): string
     {
         return $this->clientSecret;
-    }
-
-    public function getName(): string
-    {
-        return $this->name ?? '';
     }
 
     public function setName(string $name): void
@@ -111,32 +94,27 @@ class Client implements \JsonSerializable, ClientEntityInterface
         $this->name = $name;
     }
 
-    public function getRedirectUri(): string|array
-    {
-        return $this->redirectUri ?? '';
-    }
-
-    public function setRedirectUri(string $redirectUri): void
+    public function setRedirectUri(string|array $redirectUri): void
     {
         $this->redirectUri = $redirectUri;
     }
 
-    public function getGrantTypes(): ?array
+    public function getGrantTypes(): string|array
     {
         return $this->grantTypes;
     }
 
-    public function setGrantTypes(?array $grantTypes): void
+    public function setGrantTypes(string|array $grantTypes): void
     {
         $this->grantTypes = $grantTypes;
     }
 
-    public function getScopes(): ?array
+    public function getScopes(): string|array
     {
         return $this->scopes;
     }
 
-    public function setScopes(?array $scopes): void
+    public function setScopes(string|array $scopes): void
     {
         $this->scopes = $scopes;
     }
@@ -146,22 +124,27 @@ class Client implements \JsonSerializable, ClientEntityInterface
         $this->isConfidential = $isConfidential;
     }
 
-    public function isActive(): ?bool
+    public function isActive(): bool
     {
         return $this->isActive;
     }
 
-    public function setIsActive(?bool $isActive): void
+    public function setIsActive(bool $isActive): void
     {
         $this->isActive = $isActive;
     }
 
-    public function getCreatedAt(): ?string
+    public function getCreatedAt(): string
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): ?string
+    public function setCreatedAt(string $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getUpdatedAt(): string
     {
         return $this->updatedAt;
     }
@@ -169,7 +152,7 @@ class Client implements \JsonSerializable, ClientEntityInterface
     public function jsonSerialize(): mixed
     {
         return [
-            'id' => $this->id,
+            'identifier' => $this->identifier,
             'client_id' => $this->clientId,
             'redirect_uri' => $this->redirectUri,
             'name' => $this->name,
