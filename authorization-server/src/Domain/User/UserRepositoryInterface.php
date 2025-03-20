@@ -13,11 +13,11 @@ interface UserRepositoryInterface extends OAuthUserRepositoryInterface
      */
     public function findAll(): array;
 
-    public function find(string $id): User;
+    public function find(string $identifier): User;
 
     public function create(User $user): void;
 
     public function update(User $user): void;
 
-    public function delete(string $id): void;
+    public function delete(string $identifier): void;
 }

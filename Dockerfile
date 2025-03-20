@@ -11,7 +11,7 @@ FROM php_upstream AS php84_fpm
 RUN cp "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
 # php extensions installer: https://github.com/mlocati/docker-php-extension-installer
-COPY --from=php_extension_installer_upstream --link /usr/bin/install-php-extensions /usr/local/bin
+COPY --from=php_extension_installer_upstream --link /usr/bin/install-php-extensions /usr/local/bin/
 
 RUN apk add --no-cache \
     git \
