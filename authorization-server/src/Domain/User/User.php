@@ -29,7 +29,7 @@ class User implements \JsonSerializable, UserEntityInterface
     private string $updatedAt;
 
     public function __construct(
-        string $identifier,
+        string $id,
         string $username,
         string $password,
         string $email,
@@ -38,7 +38,7 @@ class User implements \JsonSerializable, UserEntityInterface
         string $createdAt,
         string $updatedAt,
     ) {
-        $this->identifier = $identifier;
+        $this->identifier = $id;
         $this->username = $username;
         $this->password = $password;
         $this->email = $email;
@@ -153,7 +153,7 @@ class User implements \JsonSerializable, UserEntityInterface
     public function jsonSerialize(): mixed
     {
         return [
-            'identifier' => $this->identifier,
+            'id' => $this->identifier,
             'username' => $this->username,
             'email' => $this->email,
             'full_name' => $this->fullName,

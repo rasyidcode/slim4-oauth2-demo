@@ -29,7 +29,7 @@ class AccessToken implements AccessTokenEntityInterface
 
     public function addScope(ScopeEntityInterface $scope): void
     {
-        $this->scopes[$scope->getName()] = $scope;
+        $this->scopes[$scope->getIdentifier()] = $scope;
     }
 
 }

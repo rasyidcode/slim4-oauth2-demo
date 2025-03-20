@@ -152,7 +152,7 @@ class Client implements \JsonSerializable, ClientEntityInterface
     public function jsonSerialize(): mixed
     {
         return [
-            'identifier' => $this->identifier,
+            'id' => $this->identifier,
             'client_id' => $this->clientId,
             'redirect_uri' => $this->redirectUri,
             'name' => $this->name,
